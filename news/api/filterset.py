@@ -21,4 +21,4 @@ class NewsFilter(rest_framework.FilterSet):
 
     class Meta:
         model = News
-        fields = ['tags', 'is_favorited']
+        fields = ['type']

@@ -14,7 +14,7 @@ SECRET_KEY = 'ft*$ju74z7q#)*z*zvqm3gw2rv_a34g=)4cu0eoge#ij4$_%(3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'djoser',
     'drf_extra_fields',
     'api',
-    'news'
+    'articles',
+    'news',
+    'users',
 ]
 
 MIDDLEWARE = [

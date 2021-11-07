@@ -9,8 +9,6 @@ from users.models import CustomUser
 
 
 class UserSerializer(UserSerializer):
-    is_subscribed = serializers.SerializerMethodField()
-
     class Meta:
         model = CustomUser
         fields = (
@@ -51,11 +49,12 @@ class ListNewsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = '__all__'
+        fields = (
+            'id', 'types', 'name', 'short_description')
 
 
 class NewsSerializer(serializers.ModelSerializer):
-    tags = TypeNewsSerializer(
+    types = TypeNewsSerializer(
         source='typenews_set',
         many=True,
         required=False
@@ -63,7 +62,7 @@ class NewsSerializer(serializers.ModelSerializer):
 
     class Meta:
         fields = (
-            'id', 'type', 'name', 'short_description', 'full_description')
+            'id', 'types', 'name', 'short_description', 'full_description')
         model = News
 
     def create(self, validated_data):
@@ -72,11 +71,11 @@ class NewsSerializer(serializers.ModelSerializer):
         for type in types:
             current_type = get_object_or_404(Type, id=type.get('type').get('id'))
             TypeNews.objects.create(
-                tag=current_type, news=news)
+                type=current_type, news=news)
         return news
 
     def update(self, instance, validated_data):
-        types = validated_data.pop('tagrecipe_set')
+        types = validated_data.pop('typenews_set')
         News.objects.filter(id=instance.id).update(**validated_data)
         news = get_object_or_404(News, id=instance.id)
         news.type.remove()
@@ -89,6 +88,6 @@ class NewsSerializer(serializers.ModelSerializer):
         for type in types:
             current_type = get_object_or_404(Type, id=type.get('type').get('id'))
             TypeNews.objects.create(
-                tag=current_type, news=news)
+                type=current_type, news=news)
         return news
 

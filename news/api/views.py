@@ -68,12 +68,17 @@ class NewsViewSet(viewsets.ModelViewSet):
         context.update({"user_id": self.request.user.id})
         return context
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = NewsSerializer(instance)
+        return Response(serializer.data)
+        
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
-        data['tags'] = [{'id': idx} for idx in data['tags']]
+        data['types'] = [{'id': idx} for idx in data['types']]
         serializer = NewsSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(author=self.request.user)
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk, *args, **kwargs):
@@ -82,10 +87,10 @@ class NewsViewSet(viewsets.ModelViewSet):
         instance.id = pk
         instance.save()
         data = request.data.copy()
-        data['tags'] = [{'id': idx} for idx in data['tags']]
+        data['types'] = [{'id': idx} for idx in data['types']]
         serializer = NewsSerializer(instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
-        serializer.save(author=self.request.user)
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
