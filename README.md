@@ -2,7 +2,7 @@
 
 ## Описание
 
-Новостное приложение с использованием DRF (Django Rest Framework).
+Новостное приложение с использованием DRF (Django Rest Framework).<br>
 Проект содержит две базы данных: новости и типы новостей.
 
 ##### Структура базы данных новостей:
@@ -137,7 +137,7 @@ Docker
 
 ### Команда клонирования проекта с DockerHub
 
-`sudo docker pull upamid/yamdb_final`
+`sudo docker pull upamid/news_app`
 
 ### Команда для запуска приложения
 
@@ -154,10 +154,6 @@ Docker
 ### Команда для создания суперпользователя
 
 `docker-compose exec web python manage.py createsuperuser`
-
-### Команда для заполнения базы начальными данными
-
-`docker-compose exec web python manage.py loaddata fixtures.json`
 
 ### Команда для остановки приложения
 
