@@ -14,8 +14,8 @@ class TypeFilter(rest_framework.FilterSet):
 
 class NewsFilter(rest_framework.FilterSet):
     type = django_filters.ModelMultipleChoiceFilter(
-        field_name='type__slug',
-        to_field_name='slug',
+        field_name='type__name',
+        to_field_name='name',
         queryset=Type.objects.all()
         )
 

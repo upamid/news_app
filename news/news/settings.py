@@ -28,13 +28,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
-    'rest_framework.authtoken',
-    'djoser',
     'drf_extra_fields',
     'api',
     'articles',
     'news',
-    'users',
 ]
 
 MIDDLEWARE = [
@@ -128,45 +125,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 9
 }
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
-
-DJOSER = {
-    'LOGIN_FIELD': 'email',
-    'REQUIRED_FIELDS': 'users.CustomUser.REQUIRED_FIELDS',
-    'HIDE_USERS': False,
-    'PERMISSIONS': {
-        'user': [
-            'djoser.permissions.CurrentUserOrAdminOrReadOnly'
-        ],
-        'user_list': [
-            'rest_framework.permissions.AllowAny'
-        ],
-    },
-    'SERIALIZERS': {
-        'current_user': 'api.serializers.UserSerializer',
-        'user': 'api.serializers.UserSerializer',
-    },
-}
-
-AUTH_USER_MODEL = 'users.CustomUser'
-
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 FIXTURE_DIRS = os.path.join(BASE_DIR, "data")

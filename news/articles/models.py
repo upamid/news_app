@@ -1,26 +1,18 @@
-from django.contrib.auth.models import User
 from django.db import models
-from news import settings
-
-# from users.models import CustomUser
-
 
 class Type(models.Model):
     name = models.CharField(
         verbose_name='Название типа новости',
         blank=False,
+        unique=True,
         max_length=200,
         help_text='Укажите название типа новости'
     )
     color = models.CharField(
         verbose_name=(u'Color'),
         max_length=7,
-        help_text=(u'HEX color, as #RRGGBB'),
-        )
-    slug = models.SlugField(
-        max_length=50,
         unique=True,
-        verbose_name='Slug'
+        help_text=(u'HEX color, as #RRGGBB'),
         )
 
     class Meta:
@@ -30,12 +22,11 @@ class Type(models.Model):
 
 
 class News(models.Model):
-    type = models.ManyToManyField(
+    type = models.ForeignKey(
         Type,
-        blank=True,
-        through='TypeNews',
-        related_name='types',
-        verbose_name='Типы',
+        related_name='type',
+        verbose_name='Тип',
+        on_delete=models.CASCADE,
     )
     name = models.CharField(
         verbose_name='Название',
@@ -43,8 +34,9 @@ class News(models.Model):
         blank=False,
         help_text='Напишите название новости'
     )
-    short_description = models.TextField(
+    short_description = models.CharField(
         verbose_name='краткое описание новости',
+        max_length=200,
         blank=False,
         help_text='Добавьте сюда краткое описание новости'
     )
@@ -57,24 +49,4 @@ class News(models.Model):
     class Meta:
         verbose_name = 'Новость',
         verbose_name_plural = 'Новости'
-        ordering = ['id']
-
-
-class TypeNews(models.Model):
-    type = models.ForeignKey(
-        Type,
-        on_delete=models.CASCADE,
-        blank=False,
-        verbose_name='Тип новости'
-    )
-    news = models.ForeignKey(
-        News,
-        on_delete=models.CASCADE,
-        blank=False,
-        verbose_name='Новость'
-    )
-
-    class Meta:
-        verbose_name = 'Тип в новости',
-        verbose_name_plural = 'Типы в новостях'
         ordering = ['id']
